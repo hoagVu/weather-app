@@ -1,7 +1,9 @@
+import Search from "@/modules/Search/Search";
+import WeatherOverview from "@/modules/WeatherInfo/WeatherOverview";
+import { Theme } from "@radix-ui/themes";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Theme } from "@radix-ui/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +37,16 @@ export default function RootLayout({
           appearance="light"
         >
           <div className="lg:bg-gray-200 h-screen w-screen flex items-center justify-center p-4 lg:p-[100px]">
-            {children}
+            <main className="grid grid-cols-12 w-full h-full bg-slate-50 lg:border lg:border-gray-100 max-w-[1240px] lg:rounded-xl">
+              <div className="p-8 col-span-4 flex flex-col pr-8 gap-4">
+                <Search />
+                <WeatherOverview />
+              </div>
+
+              <div className="p-8 col-span-8 bg-slate-100 flex flex-col pl-8">
+                {children}
+              </div>
+            </main>
           </div>
         </Theme>
       </body>

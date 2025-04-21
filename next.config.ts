@@ -1,7 +1,18 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    domains: ["openweathermap.org"],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/widgets",
+        permanent: true, // hoặc false nếu tạm thời
+      },
+    ];
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
