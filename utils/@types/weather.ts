@@ -4,3 +4,9 @@ export interface IWeather {
   humidity?: string | number;
   windSpeed?: string | number;
 }
+
+export type WindInfo = {
+  speed: number;
+  deg: number;
+  gust?: number;
+};

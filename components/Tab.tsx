@@ -28,8 +28,6 @@ function TabContent({
   const isActive = pathname === href;
   const { pending: isPending } = useLinkStatus();
 
-  console.log("pathname", pathname, href);
-
   return (
     <span
       className={clsx("flex transition duration-75 pb-1", {

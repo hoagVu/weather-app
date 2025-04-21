@@ -1,29 +1,17 @@
 "use client";
 
+import { useAppContext } from "@/context/AppContext";
+import { useGetListWeather } from "@/hooks/useGetListWeather";
 import WidgetCard from "@/modules/WidgetCard/WidgetCard";
 import WidgetCardSkeleton from "@/modules/WidgetCard/WidgetCardSkeleton";
-import { useEffect, useState } from "react";
-
-const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
+import { Key } from "react";
 
 export default function WidgetPage() {
-  const [weather, setWeather] = useState<any>(null);
+  const { weather, isLoading } = useGetListWeather([1581130, 1566083, 1581298]);
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/group?id=1581130,1566083,1581298&units=metric&appid=${API_KEY}`
-      );
-      const data = await res.json();
-      setWeather(data);
-    };
+  const { setCurrentCityId } = useAppContext();
 
-    fetchWeather();
-  }, []);
-
-  console.log("weather", weather);
-
-  if (!weather)
+  if (isLoading)
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {Array.from(Array(3).keys()).map((_, index) => {
@@ -34,22 +22,41 @@ export default function WidgetPage() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      {(weather?.list).map((elm, index) => {
-        return (
-          <div key={index}>
-            <WidgetCard
-              location={elm?.name}
-              temp={elm?.main?.temp}
-              humidity={elm?.main?.humidity}
-              windSpeed={elm?.wind?.speed}
-              description={elm?.weather[0]?.description}
-              icon={elm?.weather[0]?.icon}
-              id={elm?.id}
-              loading={!weather}
-            ></WidgetCard>
-          </div>
-        );
-      })}
+      {(weather?.list).map(
+        (
+          elm: {
+            name: string;
+            main: { temp: string | number; humidity: string | number };
+            wind: { speed: string | number };
+            weather: {
+              description: string;
+              icon: string;
+            }[];
+            id: number;
+          },
+          index: Key | null | undefined
+        ) => {
+          return (
+            <div
+              key={index}
+              onClick={() => {
+                setCurrentCityId(elm?.id);
+              }}
+            >
+              <WidgetCard
+                location={elm?.name}
+                temp={elm?.main?.temp}
+                humidity={elm?.main?.humidity}
+                windSpeed={elm?.wind?.speed}
+                description={elm?.weather[0]?.description}
+                icon={elm?.weather[0]?.icon}
+                id={elm?.id}
+                loading={!weather}
+              ></WidgetCard>
+            </div>
+          );
+        }
+      )}
     </div>
   );
 }

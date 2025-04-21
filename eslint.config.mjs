@@ -16,6 +16,8 @@ const eslintConfig = [
       "no-empty": "off",
       "no-empty-pattern": "off",
       "no-explicit-any": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
 ];

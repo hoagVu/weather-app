@@ -1,4 +1,4 @@
-import { TabGroup } from "@/components/TabGroup";
+import { NavGroup } from "@/components/NavGroup";
 
 // app/widgets/layout.tsx
 export default function WidgetLayout({
@@ -8,18 +8,7 @@ export default function WidgetLayout({
 }) {
   return (
     <>
-      <TabGroup
-        path="/widgets"
-        items={[
-          {
-            text: "Widgets",
-          },
-          {
-            text: "Widget Detail",
-            slug: "1581130",
-          },
-        ]}
-      />
+      <NavGroup />
       {children}
     </>
   );

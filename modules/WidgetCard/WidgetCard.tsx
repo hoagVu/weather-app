@@ -1,4 +1,5 @@
-import { Card, Skeleton, Text } from "@radix-ui/themes";
+import { Cross1Icon, Crosshair2Icon } from "@radix-ui/react-icons";
+import { Card, IconButton, Skeleton, Text } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
@@ -26,7 +27,7 @@ const WidgetCard: React.FunctionComponent<IWidgetCardProps> = ({
 }) => {
   return (
     <Link href={`/widgets/${id}`}>
-      <Card className="w-full h-full bg-white shadow rounded cursor-pointer">
+      <Card className="hover:bg-blue-100 w-full h-full bg-white shadow rounded cursor-pointer relative">
         <div className="flex items-center gap-2">
           <Skeleton width={"32px"} height={"32px"} loading={loading}>
             <Image
@@ -49,6 +50,15 @@ const WidgetCard: React.FunctionComponent<IWidgetCardProps> = ({
         <p>Condition: {description}</p>
         <p>Humidity: {humidity}%</p>
         <p>Wind: {windSpeed} m/s</p>
+        <div
+          className="absolute top-2 right-2 rounded-full bg-blue-50 w-[20px] h-[20px] flex justify-center items-center"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        >
+          <Cross1Icon height="14" width="14" />
+        </div>
       </Card>
     </Link>
   );

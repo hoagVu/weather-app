@@ -11,19 +11,19 @@ const WidgetCardSkeleton: React.FunctionComponent = () => {
         </div>
         <div className="flex w-full gap-1 items-center">
           Temperature:
-          <Skeleton height="32px" className="w-full"></Skeleton>°C
+          <Skeleton height="32px" className="w-full"></Skeleton>
         </div>
         <div className="flex w-full gap-1 items-center">
           Condition:
-          <Skeleton height="32px" className="w-full"></Skeleton>°C
+          <Skeleton height="32px" className="w-full"></Skeleton>
         </div>
         <div className="flex w-full gap-1 items-center">
           Humidity:
-          <Skeleton height="32px" className="w-full"></Skeleton>°C
+          <Skeleton height="32px" className="w-full"></Skeleton>
         </div>
         <div className="flex w-full gap-1 items-center">
           Wind:
-          <Skeleton height="32px" className="w-full"></Skeleton>°C
+          <Skeleton height="32px" className="w-full"></Skeleton>
         </div>
       </div>
     </Card>
