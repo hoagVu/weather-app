@@ -10,12 +10,17 @@ import "swiper/css/navigation";
 import WeatherDashboard from "./WeatherDashboard";
 import { useWeatherById } from "@/hooks/useWeatherById";
 import { useWeatherForecast } from "@/hooks/useWeatherForecast";
+import clsx from "clsx";
 
 interface IWeatherInfoProps {
   id: string;
+  className?: string;
 }
 
-const WeatherInfo: React.FunctionComponent<IWeatherInfoProps> = ({ id }) => {
+const WeatherInfo: React.FunctionComponent<IWeatherInfoProps> = ({
+  id,
+  className,
+}) => {
   const { weather, isLoading } = useWeatherById(id);
   const { forecast, isLoading: isLoadingForecast } = useWeatherForecast(id);
 
@@ -25,7 +30,7 @@ const WeatherInfo: React.FunctionComponent<IWeatherInfoProps> = ({ id }) => {
   const dailyForecastsNext24h = forecast?.list?.slice(0, 8); // 24h tới
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className={clsx("flex flex-col gap-4", className)}>
       {isLoadingForecast ? (
         <>
           <div className="flex gap-4">
@@ -52,7 +57,7 @@ const WeatherInfo: React.FunctionComponent<IWeatherInfoProps> = ({ id }) => {
           </div>
         </>
       ) : (
-        <>
+        <div className="flex flex-col gap-4">
           <div className="w-full">
             <Swiper slidesPerView={6.5} spaceBetween={20}>
               {dailyForecastsNext24h?.map((item: any) => {
@@ -111,7 +116,7 @@ const WeatherInfo: React.FunctionComponent<IWeatherInfoProps> = ({ id }) => {
               );
             })}
           </div>
-        </>
+        </div>
       )}
 
       <Heading as="h2" size="5" weight="bold" mb="1">

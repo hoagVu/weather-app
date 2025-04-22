@@ -85,7 +85,7 @@ const Search: React.FunctionComponent<ISearchProps> = () => {
             </div>
           </Dialog.Trigger>
 
-          <Dialog.Content maxWidth="800px">
+          <Dialog.Content maxWidth="800px" className="overflow-auto">
             <div className="flex flex-col gap-4 w-full">
               <WidgetCard
                 location={weather?.name}
@@ -99,7 +99,10 @@ const Search: React.FunctionComponent<ISearchProps> = () => {
                 canRemove={weather?.list?.length > 1}
                 cancelRedirect
               ></WidgetCard>
-              {/* <WeatherInfo id={valueSelected?.id} /> */}
+              <WeatherInfo
+                id={valueSelected?.id}
+                className="hidden lg:flex max-h-[400px] overflow-auto pr-4"
+              />
             </div>
 
             <Flex gap="3" mt="4" justify="end">
