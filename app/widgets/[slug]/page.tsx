@@ -1,6 +1,4 @@
 "use client";
-import { useWeatherById } from "@/hooks/useWeatherById";
-import { useWeatherForecast } from "@/hooks/useWeatherForecast";
 import WeatherInfo from "@/modules/WeatherInfo/WeatherInfo";
 import { notFound } from "next/navigation";
 import { use } from "react";
