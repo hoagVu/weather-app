@@ -5,3 +5,29 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Mặc định: ẩn scrollbar (mobile, tablet) */
+.scroll-x-lg {
+  overflow-x: hidden;
+}
+
+/* Từ breakpoint lg (>=1024px): cho scroll ngang + scrollbar */
+@media (min-width: 1024px) {
+  .scroll-x-lg {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .scroll-x-lg::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scroll-x-lg::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  .scroll-x-lg::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}

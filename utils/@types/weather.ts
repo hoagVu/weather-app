@@ -10,3 +10,8 @@ export type WindInfo = {
   deg: number;
   gust?: number;
 };
+
+export type AddressInfo = {
+  id: number;
+  name: string;
+};

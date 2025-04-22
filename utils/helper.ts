@@ -17,7 +17,7 @@ export function formatWind({ speed, deg, gust }: WindInfo): {
 } {
   const speedKmh = mpsToKmh(speed);
   const direction = degToDirection(deg);
-  const gustText = gust ? ` (gust ${mpsToKmh(gust)} km/h)` : "";
+  const gustText = gust ? ` (gust ${mpsToKmh(gust)}km/h)` : "";
   return { speed: speedKmh, direction, gustText };
 }
 

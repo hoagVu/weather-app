@@ -1,115 +1,123 @@
-import { Card, Heading, Text } from "@radix-ui/themes";
-import * as React from "react";
-import WeatherInfoCard from "./WeatherInfoCard";
+"use client";
+import { Heading, Skeleton } from "@radix-ui/themes";
 import Image from "next/image";
-import sunriseImg from "@/assets/sunrise.png";
-import sunsetImg from "@/assets/sunset.png";
-import sealevelImg from "@/assets/sea-level.png";
-import windlImg from "@/assets/air-flow.png";
-import humidityImg from "@/assets/humidity.png";
-import pressureImg from "@/assets/pressure-gauge.png";
-import eyeImg from "@/assets/eye.png";
+import * as React from "react";
 
-import { formatWind } from "@/utils/helper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { getWeatherIcon } from "./utils";
+
+import "swiper/css/navigation";
+import WeatherDashboard from "./WeatherDashboard";
+import { useWeatherById } from "@/hooks/useWeatherById";
+import { useWeatherForecast } from "@/hooks/useWeatherForecast";
 
 interface IWeatherInfoProps {
-  weather: { [key: string]: any };
-  isLoading?: boolean;
+  id: string;
 }
 
-const WeatherInfo: React.FunctionComponent<IWeatherInfoProps> = ({
-  weather,
-  isLoading,
-}) => {
-  const sunriseTime = new Date(weather?.sys?.sunrise * 1000).toLocaleTimeString(
-    "en-US",
-    {
-      hour: "2-digit",
-      minute: "2-digit",
-    }
-  );
+const WeatherInfo: React.FunctionComponent<IWeatherInfoProps> = ({ id }) => {
+  const { weather, isLoading } = useWeatherById(id);
+  const { forecast, isLoading: isLoadingForecast } = useWeatherForecast(id);
 
-  const sunsetTime = new Date(weather?.sys?.sunset * 1000).toLocaleTimeString(
-    "en-US",
-    {
-      hour: "2-digit",
-      minute: "2-digit",
-    }
+  const dailyForecasts = forecast?.list?.filter((item: any) =>
+    item.dt_txt.includes("12:00:00")
   );
-  const display: any = weather?.wind ? formatWind(weather?.wind) : {};
-  console.log("display", display);
+  const dailyForecastsNext24h = forecast?.list?.slice(0, 8); // 24h tới
+
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-3">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, idx) => (
-          <Card
-            key={idx}
-            className="p-4 flex flex-col text-center min-w-[80px]"
-          >
-            <Text>{day}</Text>
-            <Text size="2">☀️ 15° - 3°</Text>
-          </Card>
-        ))}
-      </div>
+      {isLoadingForecast ? (
+        <>
+          <div className="flex gap-4">
+            {Array.from(Array(5).keys()).map((_, index) => {
+              return (
+                <div
+                  key={index}
+                  className="p-3 !w-[120px] flex flex-col justify-center items-center gap-2 h-full bg-white shadow rounded-lg cursor-pointer"
+                >
+                  <Skeleton height="24px" className="w-full"></Skeleton>
+                  <Skeleton
+                    height="24px"
+                    width="24px"
+                    className="w-full"
+                  ></Skeleton>
+                  <Skeleton
+                    height="24px"
+                    width="60px"
+                    className="w-full"
+                  ></Skeleton>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="w-full">
+            <Swiper slidesPerView={6.5} spaceBetween={20}>
+              {dailyForecastsNext24h?.map((item: any) => {
+                const time = new Date(item.dt_txt).toLocaleTimeString("vi-VN", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                });
 
-      <Heading as="h2" size="5" weight="bold" mb="3">
+                return (
+                  <SwiperSlide
+                    key={item.dt}
+                    className=" !w-[120px] rounded-xl bg-white shadow p-2 text-center  border border-gray-200"
+                  >
+                    <div className="text-sm text-gray-600">{time}</div>
+                    <div className="w-full flex justify-center">
+                      <Image
+                        src={getWeatherIcon(item?.weather?.[0]?.main)}
+                        alt={""}
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    <div className="text-md font-medium">
+                      {Math.round(item.main.temp)}°C
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
+
+          <div className="flex gap-4 overflow-y-auto">
+            {dailyForecasts?.map((item: any) => {
+              const date = new Date(item.dt_txt).toLocaleDateString("en-EN", {
+                weekday: "short",
+                day: "2-digit",
+                month: "2-digit",
+              });
+
+              return (
+                <div
+                  key={item.dt}
+                  className="!w-[120px] bg-white p-3 gap-1 flex flex-col justify-center item-center text-center rounded-xl shadow border border-gray-200"
+                >
+                  <div className="text-sm text-gray-600">{date}</div>
+                  <div className="w-full flex justify-center">
+                    <Image
+                      src={getWeatherIcon(item?.weather?.[0]?.main)}
+                      alt={""}
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  <div className="text-sm">{item.main.temp}°C</div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      <Heading as="h2" size="5" weight="bold" mb="1">
         Today’s Highlights
       </Heading>
-      <div className="grid grid-cols-3 gap-4">
-        <WeatherInfoCard title="Visibility">
-          <div className="h-fit flex flex-col justify-center items-center gap-3 pt-3">
-            <Image src={eyeImg} alt="" height={64} width={64} />{" "}
-            <div className="text-2xl font-bold">{`${
-              weather?.visibility / 1000
-            }km`}</div>
-          </div>
-        </WeatherInfoCard>
-        <WeatherInfoCard title="Sunrise & Sunset">
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-2 items-center">
-              <Image src={sunriseImg} alt="" height={56} width={56} />
-              <div className="mt-4 font-bold">{sunriseTime}</div>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Image src={sunsetImg} alt="" height={56} width={56} />
-              <div className="mt-4 font-bold">{sunsetTime}</div>
-            </div>
-          </div>
-        </WeatherInfoCard>
-        <WeatherInfoCard title="Sea level">
-          <div className="h-fit flex flex-col justify-center items-center gap-3 pt-3">
-            <Image src={sealevelImg} alt="" height={64} width={64} />{" "}
-            <div className="text-2xl font-bold">{`${weather?.main?.sea_level}hPa`}</div>
-          </div>
-        </WeatherInfoCard>{" "}
-        <WeatherInfoCard title="Pressure">
-          <div className="h-fit flex flex-col justify-center items-center gap-3 pt-3">
-            <Image src={pressureImg} alt="" height={64} width={64} />{" "}
-            <div className="text-2xl font-bold">{`${weather?.main?.pressure}hPa`}</div>
-          </div>
-        </WeatherInfoCard>
-        <WeatherInfoCard title="Wind">
-          <div className="flex flex-col gap-2 justify-between items-center">
-            <div className="flex gap-2 items-center pt-3">
-              <Image src={windlImg} alt="" height={56} width={56} />{" "}
-              <div className="text-2xl font-bold">{`${display?.speed}km/h`}</div>
-            </div>
-            <div className="text-xl pt-3 flex justify-start w-full pl-4">
-              <strong>{display?.direction}</strong>
-              &nbsp;
-              <span className="text-lg">
-                {display?.gustText && `${display?.gustText}`}
-              </span>
-            </div>{" "}
-          </div>
-        </WeatherInfoCard>{" "}
-        <WeatherInfoCard title="Humidity">
-          <div className="h-fit flex flex-col justify-center items-center gap-3 pt-3">
-            <Image src={humidityImg} alt="" height={64} width={64} />{" "}
-            <div className="text-2xl font-bold">{`${weather?.main?.humidity}%`}</div>
-          </div>
-        </WeatherInfoCard>
-      </div>
+      <WeatherDashboard weather={weather} isLoading={isLoading} />
     </div>
   );
 };

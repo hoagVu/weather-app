@@ -1,8 +1,12 @@
-import { Cross1Icon, Crosshair2Icon } from "@radix-ui/react-icons";
-import { Card, IconButton, Skeleton, Text } from "@radix-ui/themes";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { Card, Skeleton, Text } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
+import { getWeatherIcon } from "../WeatherInfo/utils";
+import { capitalizeWords } from "@/utils/helper";
+import clsx from "clsx";
+import { useAppContext } from "@/context/AppContext";
 
 interface IWidgetCardProps {
   temp: string | number;
@@ -10,9 +14,11 @@ interface IWidgetCardProps {
   humidity: string | number;
   windSpeed: string | number;
   location: string;
-  icon: string;
+  main: string;
   id: number;
   loading?: boolean;
+  isActive?: boolean;
+  canRemove?: boolean;
 }
 
 const WidgetCard: React.FunctionComponent<IWidgetCardProps> = ({
@@ -21,17 +27,28 @@ const WidgetCard: React.FunctionComponent<IWidgetCardProps> = ({
   humidity,
   windSpeed,
   location,
-  icon,
+  main,
   id,
   loading,
+  isActive,
+  canRemove,
 }) => {
+  const { setWidgets, widgets, setCurrentCityId } = useAppContext();
+
   return (
     <Link href={`/widgets/${id}`}>
-      <Card className="hover:bg-blue-100 w-full h-full bg-white shadow rounded cursor-pointer relative">
+      <Card
+        className={clsx(
+          "hover:bg-blue-100 w-full h-full bg-white shadow rounded cursor-pointer relative",
+          {
+            "!bg-blue-200": isActive,
+          }
+        )}
+      >
         <div className="flex items-center gap-2">
           <Skeleton width={"32px"} height={"32px"} loading={loading}>
             <Image
-              src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
+              src={getWeatherIcon(main)}
               alt={description}
               width={32}
               height={32}
@@ -47,18 +64,22 @@ const WidgetCard: React.FunctionComponent<IWidgetCardProps> = ({
           </Skeleton>
         </div>
         <p>Temperature: {temp}°C</p>
-        <p>Condition: {description}</p>
+        <p>Condition: {capitalizeWords(description)}</p>
         <p>Humidity: {humidity}%</p>
         <p>Wind: {windSpeed} m/s</p>
-        <div
-          className="absolute top-2 right-2 rounded-full bg-blue-50 w-[20px] h-[20px] flex justify-center items-center"
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-          }}
-        >
-          <Cross1Icon height="14" width="14" />
-        </div>
+        {canRemove && (
+          <div
+            className="absolute top-2 right-2 rounded-full bg-blue-50 w-[20px] h-[20px] flex justify-center items-center"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setWidgets(widgets.filter((elm) => elm.id !== id));
+              setCurrentCityId(widgets[0].id);
+            }}
+          >
+            <Cross1Icon height="14" width="14" />
+          </div>
+        )}
       </Card>
     </Link>
   );
