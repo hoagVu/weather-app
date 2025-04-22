@@ -19,6 +19,7 @@ interface IWidgetCardProps {
   loading?: boolean;
   isActive?: boolean;
   canRemove?: boolean;
+  cancelRedirect?: boolean;
 }
 
 const WidgetCard: React.FunctionComponent<IWidgetCardProps> = ({
@@ -32,6 +33,7 @@ const WidgetCard: React.FunctionComponent<IWidgetCardProps> = ({
   loading,
   isActive,
   canRemove,
+  cancelRedirect,
 }) => {
   const { setWidgets, widgets, setCurrentCityId } = useAppContext();
 
@@ -44,6 +46,11 @@ const WidgetCard: React.FunctionComponent<IWidgetCardProps> = ({
             "!bg-blue-200": isActive,
           }
         )}
+        onClick={(e) => {
+          if (cancelRedirect) {
+            e.preventDefault(); // Ngăn redirect
+          }
+        }}
       >
         <div className="flex items-center gap-2">
           <Skeleton width={"32px"} height={"32px"} loading={loading}>

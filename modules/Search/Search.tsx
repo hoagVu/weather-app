@@ -21,6 +21,7 @@ import WeatherInfo from "../WeatherInfo/WeatherInfo";
 import WidgetCard from "../WidgetCard/WidgetCard";
 import { useRouter } from "next/navigation";
 import GeoButton from "./GeoButton";
+import WeatherOverview from "../WeatherInfo/WeatherOverview";
 
 type ISearchProps = object;
 
@@ -46,14 +47,18 @@ const Search: React.FunctionComponent<ISearchProps> = () => {
   };
 
   const results = React.useMemo(() => {
-    const fuse = new Fuse(VN_COUNTRY || [], {
+    const filterWidgets = VN_COUNTRY.filter(
+      (aItem) => !widgets.some((bItem) => bItem.id === aItem.id)
+    );
+
+    const fuse = new Fuse(filterWidgets || [], {
       useExtendedSearch: true,
       keys: ["id", "name"],
     });
     return searchText === ""
-      ? VN_COUNTRY
+      ? filterWidgets
       : fuse?.search(searchText)?.map((item) => item?.item);
-  }, [searchText]);
+  }, [searchText, widgets]);
 
   return (
     <>
@@ -81,7 +86,7 @@ const Search: React.FunctionComponent<ISearchProps> = () => {
           </Dialog.Trigger>
 
           <Dialog.Content maxWidth="800px">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 w-full">
               <WidgetCard
                 location={weather?.name}
                 temp={weather?.main?.temp}
@@ -92,8 +97,9 @@ const Search: React.FunctionComponent<ISearchProps> = () => {
                 id={weather?.id}
                 loading={!weather}
                 canRemove={weather?.list?.length > 1}
+                cancelRedirect
               ></WidgetCard>
-              <WeatherInfo id={valueSelected?.id} />
+              {/* <WeatherInfo id={valueSelected?.id} /> */}
             </div>
 
             <Flex gap="3" mt="4" justify="end">
@@ -101,9 +107,10 @@ const Search: React.FunctionComponent<ISearchProps> = () => {
                 <Button
                   variant="soft"
                   color="gray"
+                  asChild
                   onClick={() => setValueSelected(null)}
                 >
-                  Cancel
+                  <span className="cursor-pointer">Cancel</span>
                 </Button>
               </Dialog.Close>
               <Dialog.Close>
