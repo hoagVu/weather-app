@@ -1,4 +1,4 @@
-export const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
+export const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_KEY;
 export const DEFAULT_CITY_ID = 1581130;
 export const API_URL = "https://api.openweathermap.org";
 export const VN_COUNTRY = [
