@@ -23,8 +23,8 @@ const WeatherOverview: React.FunctionComponent<IWeatherOverviewProps> = () => {
       <Skeleton loading={isLoading}>
         <div className="lg:w-full lg:h-[220px] relative">
           <Image
-            src={getWeatherIcon(weather?.weather[0]?.main)}
-            alt={weather?.weather[0]?.description || ""}
+            src={getWeatherIcon(weather?.weather?.[0]?.main)}
+            alt={weather?.weather?.[0]?.description || ""}
             layout="fill"
             objectFit="contain"
           />
@@ -43,7 +43,7 @@ const WeatherOverview: React.FunctionComponent<IWeatherOverviewProps> = () => {
       </Skeleton>
       <Skeleton loading={isLoading}>
         <div className="text-center ">
-          🌥️ {capitalizeWords(weather?.weather[0]?.description)}
+          🌥️ {capitalizeWords(weather?.weather?.[0]?.description)}
         </div>
       </Skeleton>
       <Skeleton loading={isLoading}>

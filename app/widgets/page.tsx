@@ -21,7 +21,7 @@ export default function WidgetPage() {
     );
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      {(weather?.list).map(
+      {weather?.list?.map(
         (elm: {
           name: string;
           main: { temp: string | number; humidity: string | number };
