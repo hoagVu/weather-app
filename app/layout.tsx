@@ -39,7 +39,7 @@ export default function RootLayout({
             radius="large"
             appearance="light"
           >
-            <div className="scroll-x-lg lg:bg-gray-200 h-screen w-screen flex items-center justify-center p-0 lg:p-[40px] lg:max-h-[calc(100%-80px)]">
+            <div className="scroll-x-lg lg:bg-gray-200 h-dvh w-dvw flex items-center justify-center p-0 lg:p-[40px] lg:max-h-[calc(100%-80px)]">
               <div className="flex flex-col lg:grid lg:grid-cols-12 w-full h-full bg-slate-50 lg:border lg:border-gray-100 max-w-[1240px] lg:rounded-xl">
                 <div className="w-full p-4 lg:p-6 col-span-4 flex flex-col pb-6 lg:pr-6 gap-4">
                   <Search />
