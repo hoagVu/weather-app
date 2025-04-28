@@ -86,7 +86,7 @@ export default function WeatherDashboard({
     return {
       visibility: (
         <WeatherInfoCard title="Visibility">
-          <div className="h-fit flex flex-col justify-center items-center gap-3">
+          <div className="h-fit flex flex-col justify-center items-center gap-3 pt-3">
             <Image src={eyeImg} alt="" height={64} width={64} />
             <Skeleton loading={isLoading}>
               <div className="text-2xl font-bold">{`${
@@ -116,7 +116,7 @@ export default function WeatherDashboard({
       ),
       seaLevel: (
         <WeatherInfoCard title="Sea level">
-          <div className="h-fit flex flex-col justify-center items-center gap-3">
+          <div className="h-fit flex flex-col justify-center items-center gap-3 pt-3">
             <Image src={sealevelImg} alt="" height={64} width={64} />
             <Skeleton loading={isLoading}>
               <div className="text-2xl font-bold">{`${weather?.main?.sea_level}hPa`}</div>
@@ -126,7 +126,7 @@ export default function WeatherDashboard({
       ),
       pressure: (
         <WeatherInfoCard title="Pressure">
-          <div className="h-fit flex flex-col justify-center items-center gap-3">
+          <div className="h-fit flex flex-col justify-center items-center gap-3 pt-3">
             <Image src={pressureImg} alt="" height={64} width={64} />
             <Skeleton loading={isLoading}>
               <div className="text-2xl font-bold">{`${weather?.main?.pressure}hPa`}</div>
@@ -136,7 +136,7 @@ export default function WeatherDashboard({
       ),
       wind: (
         <WeatherInfoCard title="Wind">
-          <div className="flex flex-col gap-2 justify-between items-start">
+          <div className="flex flex-col gap-2 justify-between items-start pt-3">
             <div className="flex gap-2 items-center">
               <Image
                 src={windlImg}
@@ -163,7 +163,7 @@ export default function WeatherDashboard({
       ),
       humidity: (
         <WeatherInfoCard title="Humidity">
-          <div className="h-fit flex flex-col justify-center items-center gap-3 w-full">
+          <div className="h-fit flex flex-col justify-center items-center gap-3 pt-3 w-full">
             <Image src={humidityImg} alt="" height={64} width={64} />
             <Skeleton loading={isLoading}>
               <div className="text-2xl font-bold">{`${weather?.main?.humidity}%`}</div>
