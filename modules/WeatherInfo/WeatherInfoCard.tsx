@@ -11,8 +11,8 @@ const WeatherInfoCard: React.FunctionComponent<IWeatherInfoCardProps> = ({
   children,
 }) => {
   return (
-    <Card className="p-4 h-full w-full shadow">
-      <Text as="div" className="text-gray-500 !mb-1">
+    <Card className="p-4 h-full w-full shadow lg:max-h-[155px]">
+      <Text as="div" className="text-gray-500">
         {title}
       </Text>
       {children}
